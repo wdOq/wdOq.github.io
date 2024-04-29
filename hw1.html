@@ -1,0 +1,88 @@
+<html>
+<style>
+    body {
+  min-height: 100%;  
+  background: #eee; /*設定外背景的顏色*/
+  font-family: 'Lato', sans-serif; /*設定字的樣式*/
+  font-weight: 400; /*設定字的粗細*/
+  color: #222; /*設定文字的顏色 深灰*/
+  font-size: 14px; /*這行代碼將 body 內所有元素的字體大小設置為 14 像素。*/
+  line-height: 26px; /*這行代碼將 body 內所有元素的行高設置為 26 像素。行高是指兩行文字基線之間的距離。*/
+}
+.container {
+  max-width: 600px; /*設定內框最大的寬度*/  
+  background: #fff; /*設定內背景的顏色*/
+  margin: 0px auto 0px; /*這行代碼為 .container 元素設置了外邊距。0px auto 0px 是一種縮寫語法，它分別設置了上、右（和左）、下的外邊距。auto 會自動計算右邊和左邊的外邊距，使 .container 元素在水平方向上居中*/
+  border-radius: 8px;  /*這行代碼將 .container 元素的邊框半徑設置為8像素。這會使 .container 元素的邊角變得圓滑。*/
+  padding: 40px; /*這行代碼為 .container 元素設置了內邊距。內邊距是元素邊框與內部內容之間的空間。*/
+  margin-top: 50px; /*這行代碼為 .container 元素添加了 50 像素的上外邊距。這會在 .container 元素和其上方的元素之間創建一個空間。*/
+}
+.header {
+  .full-name {
+    font-size: 40px;/*設置字體大小為 40 像素*/
+    margin-bottom: 5px;/*設置下邊距為 5 像素。*/
+    font-weight: 700;
+  }
+  .contact-info {
+    margin-bottom: 20px;/*信箱電話下的空白*/
+  }
+  .email ,.phone {
+    color: #999;/*設置文字顏色為 #999，這是一種深灰色。*/
+    font-weight: 300;/*設置字體粗細為 300，這相當於 ‘light’ 粗細。*/
+  } 
+  
+  .separator { /*信箱跟電話之間的小槓槓*/
+    height: 10px;/*設置元素高度為 10 像素。*/
+    display: inline-block;/*將元素顯示為內聯區塊，這意味著元素可以像內聯元素一樣排列在一行，同時又可以設置寬度和高度。*/
+    border-left: 2px solid #999;/*為元素的左邊添加一個 2 像素寬、顏色為 #999 的實線邊框。*/
+    margin: 0px 10px;/*設置元素的外邊距。0px 10px 是一種縮寫語法，它分別設置了上下（和下）和左右的外邊距。*/
+  }
+  
+} 
+.interests {/*用flexbox來佈局將興趣與嗜好分成左右兩邊*/
+            display: flex; /*這行代碼將 .interests 的顯示方式設置為 flex。Flex（彈性盒子）是一種 CSS 佈局模式，它可以讓元素在容器中更加靈活地排列和對齊。*/
+            justify-content: space-around;/*這行代碼將 .interests 中的元素沿著主軸（在這裡是水平軸）對齊，並在元素之間平均分配空間。這意味著第一個元素將對齊到行的開頭，最後一個元素將對齊到行的結尾。*/
+            margin-bottom: 20px;/*：這行代碼為 .interests 添加了 20 像素的下邊距。這會在 .interests 和其下方的元素之間創建一個空間。*/
+        }
+        .interests div {/*這是一個類選擇器，它選擇了 .interests 中的所有 div 元素。*/
+           width: 45%; /*這行代碼將 .interests 中的每個 div 的寬度設置為容器寬度的 45%。這樣可以確保這兩個 div 在同一行上，並且在中間留出一定的空間。*/
+        }
+</style>
+<body>
+    <div class="container">
+    <div class="header">
+        <div class="full-name">
+          鄭鈞文
+        </div>
+        <div class="contact-info">
+          <span class="email">信箱: </span>
+          <span>adison901023@gmail.com</span>
+          <span class="separator"></span>
+          <span class="phone">電話: </span>
+          <span>0918497188</span>
+        </div>
+       <div class="interests">
+            <div>
+              <h2><span style="color:#4dc3ff">興趣</span></h2>
+                <ul>
+                    <li>閱讀</li>
+                    <li>看電影</li>
+                    <li>旅行</li>
+                </ul>
+            </div>
+            <div>
+              <h2><span style="color:#4dc3ff">嗜好</span></h2>
+                <ul>
+                    <li>烹飪</li>
+                    <li>運動</li>
+                    <li>音樂</li>
+                </ul>
+            </div>
+        </div>
+        <h2>最常用的編輯器小工具</h2>
+        <p>我目前最常使用的編輯器小工具是node-red。它可以連接arduino也可以部署網頁，是對新手來說蠻好上手的編譯器。</p>
+        <h2>個人介紹</h2>
+        <p>我是一名熱愛學習新技術的學生。我對解決複雜問題充滿熱情，並且我喜歡創新和具有創造力的人事物，我注重團隊合作。在閒暇之餘，我喜歡看電影、旅行和玩遊戲。</p>
+      </div>
+      </body>
+</html>
