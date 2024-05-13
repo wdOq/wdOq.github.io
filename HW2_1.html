@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .input-container {
+        margin-left: 30px;
+        display: inline-block;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    .input-container input[type="search"],
+    .input-container input[type="text"] {
+        padding: 10px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    #todo-list {
+        list-style: none;
+        padding: 0;
+        width: 60%;
+        margin: 0 auto;
+    }
+    #todo-list li {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+    .todo-item {
+        flex-grow: 1;
+    }
+    .completed {
+        text-decoration: line-through;
+    }
+    .actions {
+        margin-left: 10px;
+    }
+    .progress-container {
+        margin-top: 20px;
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+    }
+    .progress-circle {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 10;
+        transition: stroke 2s;
+    }
+    .progress-bar {
+        fill: none;
+        stroke: #007bff;
+        stroke-width: 10;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.5s ease-in-out;
+    }
+    #progress-text {
+        font-size: 20px;
+        fill: #007bff;
+    }
+    .titleblock{
+        display: flex;
+
+    }
+    .complete{
+        margin-top: 50px;
+        font-size: 50px;
+    }
+    .bigtitle{
+        background-color: beige;
+        font-size: 100px;
+        font-weight: bold;
+        margin-top: 0px;
+        margin-bottom: 20px;
+    }
+</style>
+<title>Todolist</title>
+</head>
+<div class="bigtitle">TODO list</div>
+<body>
+    <div class="input-container">
+        <input type="text" id="todo-input" placeholder="輸入待辦事項">
+        <button type="button" class="btn btn-outline-primary add-button">新增</button>
+    </div>
+
+    <div class="input-container">
+        <input type="search" id="search-input" placeholder="查詢待辦事項">
+        <button type="button" class="btn btn-outline-info search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            查詢
+        </button>
+    </div>
+    <ul id="todo-list"></ul>
+    <div class="complete"><p> 完成度 </p></div>
+    <div class="progress-container">
+        <svg id="progress" width="100" height="100">
+            <circle class="progress-circle" cx="50" cy="50" r="45"></circle>
+            <circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+            <text id="progress-text" x="50" y="50" text-anchor="middle" dominant-baseline="middle">0%</text>
+        </svg>
+    </div>
+
+    <script>
+        function updateProgress() {
+            var totalItems = document.querySelectorAll('.todo-item').length;
+            var completedItems = document.querySelectorAll('.completed').length;
+            var progress = document.getElementById('progress');
+            var progressText = document.getElementById('progress-text');
+            var percent = (completedItems / totalItems) * 100 || 0;
+            progressText.textContent = percent.toFixed(0) + '%';
+            var circumference = Math.PI * 2 * 45;
+            var offset = circumference * (1 - percent / 100);
+            document.querySelector('.progress-bar').style.strokeDashoffset = offset;
+            if (percent === 0) {
+                document.querySelector('.progress-circle').style.stroke = '#ccc';
+            }
+        }
+
+        function createTodoItem(text) {
+            var listItem = document.createElement('li');
+            var todoText = document.createElement('span');
+            todoText.textContent = text;
+            todoText.classList.add('todo-item');
+            listItem.appendChild(todoText);
+
+            var editButton = document.createElement('button');
+            editButton.textContent = '修改';
+            editButton.classList.add('btn', 'btn-outline-success'); // Add Bootstrap classes
+            editButton.addEventListener('click', function() {
+                var newText = prompt('請輸入新的內容：', text);
+                if (newText !== null) {
+                    todoText.textContent = newText;
+                }
+            });
+            listItem.appendChild(editButton);
+
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = '刪除';
+            deleteButton.classList.add('btn', 'btn-outline-danger', 'ms-1'); // Add Bootstrap classes and margin
+            deleteButton.addEventListener('click', function() {
+                listItem.remove();
+                updateProgress();
+            });
+            listItem.appendChild(deleteButton);
+
+            listItem.addEventListener('click', function(event) {
+                if (event.target.tagName !== 'BUTTON') {
+                    todoText.classList.toggle('completed');
+                    updateProgress();
+                }
+            });
+
+            return listItem;
+        }
+
+        document.querySelector('.add-button').addEventListener('click', function() {
+            var todoInput = document.getElementById('todo-input').value;
+            if (todoInput.trim() !== '') {
+                var todoList = document.getElementById('todo-list');
+                var listItem = createTodoItem(todoInput);
+                todoList.appendChild(listItem);
+                document.getElementById('todo-input').value = '';
+                updateProgress();
+            }
+        });
+
+        document.querySelector('.search-button').addEventListener('click', function() {
+            var searchTerm = document.getElementById('search-input').value.toLowerCase();
+            var todoList = document.getElementById('todo-list');
+            var listItems = todoList.getElementsByTagName('li');
+            for (var i = 0; i < listItems.length; i++) {
+                var todoText = listItems[i].querySelector('.todo-item').textContent.toLowerCase();
+                if (todoText.includes(searchTerm)) {
+                    listItems[i].style.backgroundColor = '#ff7f7f';
+                    setTimeout(function(item) {
+                        item.style.transition = 'background-color 1s';
+                        item.style.backgroundColor = '#f9f9f9';
+                    }, 150, listItems[i]);
+                    todoList.insertBefore(listItems[i], todoList.firstChild);
+                } else {
+                    listItems[i].style.backgroundColor = '#f9f9f9';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
