@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .input-container {
+        margin-left: 30px;
+        display: inline-block;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    .input-container input[type="search"],
+    .input-container input[type="text"] {
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    } 
+    #todo-list {
+        list-style: none;
+        padding: 0;
+        width: 60%;
+        margin: 0 auto;
+    }
+    #todo-list li {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+    .todo-item {
+        flex-grow: 1;
+    }
+    .completed {
+        text-decoration: line-through;
+    }
+    .actions {
+        margin-left: 10px;
+    }
+    .progress-container {
+        margin-top: 20px;
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+    }
+    .progress-circle {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 10;
+        transition: stroke 2s;
+    }
+    .progress-bar {
+        fill: none;
+        stroke: #007bff;
+        stroke-width: 10;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.5s ease-in-out;
+    }
+    #progress-text {
+        font-size: 20px;
+        fill: #007bff;
+    }
+    .titleblock{
+        display: flex;
+
+    }
+    .complete{
+        margin-top: 50px;
+        font-size: 50px;
+    }
+    .bigtitle{
+        background-color: beige;
+        font-size: 100px;
+        font-weight: bold;
+        margin-top: 0px;
+        margin-bottom: 20px;
+    }
+</style>
+<title>Todolist</title>
+</head>
+<div class="bigtitle">TODO list</div>
+<body>
+    <div class="input-container">
+        <input type="text" id="todo-input" placeholder="輸入待辦事項">
+        <button type="button" class="btn btn-outline-primary add-button">新增</button>
+    </div>
+
+    <div class="input-container">
+        <input type="search" id="search-input" placeholder="查詢待辦事項">
+        <button type="button" class="btn btn-outline-info search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            查詢
+        </button>
+    </div>
+    <ul id="todo-list"></ul>
+    <div class="complete"><p> 完成度 </p></div>
+    <div class="progress-container">
+        <svg id="progress" width="100" height="100">
+            <circle class="progress-circle" cx="50" cy="50" r="45"></circle>
+            <circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+            <text id="progress-text" x="50" y="50" text-anchor="middle" dominant-baseline="middle">0%</text>
+        </svg>
+    </div>
+
+    <script>
+        function updateProgress() {
+        const items = document.querySelectorAll('.todo-item').length;
+        const completed = document.querySelectorAll('.completed').length;
+        const percent = (completed / items) * 100 || 0;
+        document.getElementById('progress-text').textContent = `${percent.toFixed(0)}%`;
+    
+        const offset = Math.PI * 2 * 45 * (1 - percent / 100);
+        document.querySelector('.progress-bar').style.strokeDashoffset = offset;
+    }
+
+
+    function createTodoItem(text) {
+    const listItem = document.createElement('li');
+    
+    const todoText = document.createElement('span');
+    todoText.textContent = text;
+    todoText.classList.add('todo-item');
+    listItem.appendChild(todoText);
+
+    const editButton = document.createElement('button');
+    editButton.textContent = '修改';
+    editButton.classList.add('btn', 'btn-outline-success');
+    editButton.addEventListener('click', () => {
+        const newText = prompt('請輸入新的內容：', todoText.textContent);
+        if (newText === null) {
+        return;} 
+        else if (newText.trim() === "") {
+        alert('請輸入值');} 
+        else 
+        todoText.textContent = newText;
+    });
+    listItem.appendChild(editButton);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '刪除';
+    deleteButton.classList.add('btn', 'btn-outline-danger', 'ms-1');
+    deleteButton.addEventListener('click', () => {
+        listItem.remove();
+        updateProgress();
+    });
+    listItem.appendChild(deleteButton);
+
+    listItem.addEventListener('click', (event) => {
+        if (event.target.tagName != 'BUTTON') {
+            todoText.classList.toggle('completed');
+            updateProgress();
+        }
+    });
+
+    return listItem;
+}
+
+
+document.querySelector('.add-button').addEventListener('click', () => {
+    const todoInput = document.getElementById('todo-input');
+    if (todoInput.value.trim()) {
+        const listItem = createTodoItem(todoInput.value);
+        document.getElementById('todo-list').appendChild(listItem);
+        todoInput.value = '';
+        updateProgress();
+    }
+});
+
+document.querySelector('.search-button').addEventListener('click', () => {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const listItems = document.getElementById('todo-list').getElementsByTagName('li');
+    Array.from(listItems).forEach(item => {
+        const todoText = item.querySelector('.todo-item').textContent.toLowerCase();
+        item.style.backgroundColor = todoText.includes(searchTerm) ? '#ff7f7f' : '#f9f9f9';
+        if (todoText.includes(searchTerm)) {
+            setTimeout(() => {
+                item.style.transition = 'background-color 1s';
+                item.style.backgroundColor = '#f9f9f9';
+            }, 150);
+            item.parentNode.insertBefore(item, item.parentNode.firstChild);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>
