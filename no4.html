@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .a{
+        display:none;
+    }
+</style>
+<body>
+    <img ID="a" src = "https://fakeimg.pl/150x130">
+    <button ID="b">顯示圖片</button>
+    <button ID="c">隱藏圖片</button>
+</body>
+<script>
+    let pic = document.getElementById("a");
+    let on = document.getElementById("b");
+    let off = document.getElementById("c");
+     on.addEventListener('click',()=>{
+        pic.style.display = "block";
+     })
+     off.addEventListener('click',()=>{
+        pic.style.display = "none";
+     })
+</script>
+</html>
